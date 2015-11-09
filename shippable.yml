@@ -1,0 +1,86 @@
+---
+cache: false
+
+language: php
+
+php:
+  - 5.5
+
+env:
+  global:
+    - SHIPPABLE_REPO_DIR="$HOME/workspace/src/bitbucket.com/$REPO_NAME/src" PROJECT_BUILD_DIR="$HOME/workspace/src/bitbucket.com/$REPO_NAME"
+
+before_install:
+  # Install composer
+  - curl -sS https://getcomposer.org/installer | php
+  - composer self-update
+  - composer config --global github-oauth.github.com 26581746c33b5e7ab1f5e0c33b4fdc186c050292
+  # Install drush
+  - composer global require drush/drush:6.5.0
+  # Install kraftwagen
+  - mkdir ~/.drush && cd ~/.drush
+  - git clone "git://github.com/kraftwagen/kraftwagen.git"
+  - sudo ln -s ~/.composer/vendor/bin/drush /usr/local/bin
+  - drush cc drush
+  # Get Coder 7.x-2.x version
+  - composer global require drupal/coder:\<8
+  # Make the phpcs and phpcbf commands globally available
+  - sudo ln -s ~/.composer/vendor/bin/phpcs /usr/local/bin
+  - sudo ln -s ~/.composer/vendor/bin/phpcbf /usr/local/bin
+  # Register the Drupal and DrupalPractice Standard with PHPCS
+  - phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+
+# This sections is used to install your application dependencies,
+# e.g drush commands, composer libraries, etc.
+#install:
+
+before_script:
+  - mysql -e "create database art_log"
+#  - mysql -e "GRANT USAGE ON *.* TO shippable@localhost;"
+#  - mysql -e "GRANT ALL PRIVILEGES ON test.* TO shippable@localhost;"
+#  - mysql -e 'FLUSH PRIVILEGES;'
+  - cd $PROJECT_BUILD_DIR
+  - mkdir -p shippable/codecoverage
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/cs
+  - cd $SHIPPABLE_REPO_DIR
+  - drush kw-s && cd ..
+  # Override kraftwagen environment for testing.
+  - cp -f  src/cnf/settings.testing.php cnf/settings.local.php
+  - cp -f  src/cnf/kraftwagenrc.testing.php cnf/kraftwagenrc.php
+  - rm -rf cnf/environment
+  - echo "testing" >> cnf/environment
+
+script:
+  # Run php sniffer
+  - cd $SHIPPABLE_REPO_DIR
+  - sh cnf/ci/sniffer.sh
+  # Run build
+  - cd $PROJECT_BUILD_DIR
+  - drush kw-b
+  - cd build
+  # Fix permissions.
+  - sudo chmod -R 777 sites/default/files
+  # We should use kw-id, but using 'si' to ignore mail sending error.
+  - drush sql-drop --yes
+  - drush si art_log install_configure_form.update_status_module='array(FALSE,FALSE)' --yes
+  - drush kw-amd development && drush cc all
+  # Update drupal composer packages.
+  - drush composer-json-rebuild
+  - drush composer-manager update -y
+  - drush updb --yes
+  - drush features-revert-all --yes
+  - drush cc all
+  - drush features-revert-all --yes
+  - drush cc all
+  # - sh $SHIPPABLE_REPO_DIR/cnf/ci/test_features_revert.sh
+  - drush kw-m development
+  - drush upwd admin --password=admin
+  - drush cc all
+  - drush kw-it
+  # Run migrations
+  # - sh cnf/ci/tests/migration/test.sh
+
+notifications:
+  email:
+  - hjtzgrrnnx+art-log@in.mailroom.hipch.at

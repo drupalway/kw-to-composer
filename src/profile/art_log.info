@@ -1,0 +1,130 @@
+name = Art Log
+description = Install profile for Art Log
+core = 7.x
+
+; Core
+dependencies[] = locale
+dependencies[] = list
+dependencies[] = text
+dependencies[] = options
+dependencies[] = image
+dependencies[] = file
+dependencies[] = menu
+dependencies[] = path
+dependencies[] = taxonomy
+dependencies[] = block
+dependencies[] = contextual
+dependencies[] = field_ui
+
+; Contrib
+dependencies[] = jquery_update
+dependencies[] = ctools
+dependencies[] = context
+dependencies[] = context_layouts
+dependencies[] = context_omega
+dependencies[] = features
+dependencies[] = libraries
+dependencies[] = wysiwyg
+dependencies[] = bean
+dependencies[] = pathauto
+dependencies[] = entity
+dependencies[] = views
+dependencies[] = rules
+dependencies[] = strongarm
+dependencies[] = ds_extras
+dependencies[] = ajax_register
+dependencies[] = better_exposed_filters
+dependencies[] = entityreference
+dependencies[] = cer
+dependencies[] = field_collection
+dependencies[] = date
+dependencies[] = date_popup
+dependencies[] = date_views
+dependencies[] = link
+dependencies[] = geofield
+dependencies[] = leaflet_widget
+dependencies[] = profile2
+; dependencies[] = account_profile
+dependencies[] = addressfield
+dependencies[] = search_api
+dependencies[] = search_api_views
+dependencies[] = search_api_solr
+dependencies[] = relation
+dependencies[] = relation_add
+dependencies[] = computed_field
+dependencies[] = computed_field_tools
+dependencies[] = entity_translation
+dependencies[] = title
+dependencies[] = colorbox
+dependencies[] = auto_entitylabel
+;dependencies[] = boxes
+dependencies[] = slick
+dependencies[] = slick_ui
+dependencies[] = slick_views
+dependencies[] = fontawesome
+dependencies[] = search_api_multi
+dependencies[] = gmap
+dependencies[] = menu_attributes
+
+; Custom
+dependencies[] = al_common
+
+; Features
+dependencies[] = al_config
+dependencies[] = al_homepage
+dependencies[] = al_newsticker
+dependencies[] = al_notebook
+dependencies[] = al_kunstbulletin
+dependencies[] = al_partner_issue
+dependencies[] = al_event
+dependencies[] = al_video
+dependencies[] = al_artists_in_residence
+dependencies[] = al_association
+dependencies[] = al_person
+dependencies[] = al_hotspots
+dependencies[] = al_search
+dependencies[] = al_menu
+
+; Languages
+dependencies[] = variable
+dependencies[] = i18n_field
+dependencies[] = transliteration
+
+; Administration
+dependencies[] = module_filter
+dependencies[] = fpa
+dependencies[] = admin_menu
+dependencies[] = adminimal_admin_menu
+
+; Power
+dependencies[] = kw_manifests
+
+env_dependencies[development][] = xautoload
+env_dependencies[development][] = composer_manager
+env_dependencies[testing][] = xautoload
+env_dependencies[testing][] = composer_manager
+
+env_dependencies[testing][] = al_migration
+env_dependencies[development][] = al_migration
+
+env_dependencies[production][] = xautoload
+env_dependencies[production][] = composer_manager
+
+env_dependencies[development][] = field_ui
+env_dependencies[development][] = diff
+env_dependencies[development][] = ds_ui
+env_dependencies[development][] = views_ui
+env_dependencies[development][] = devel
+env_dependencies[development][] = devel_generate
+; This module causes bug on bootstrap theme.
+;env_dependencies[development][] = devel_themer
+
+env_dependencies[development][] = maillog
+env_dependencies[development][] = rules_admin
+env_dependencies[development][] = context_ui
+env_dependencies[development][] = contextual
+env_dependencies[development][] = dblog
+env_dependencies[development][] = bundle_copy
+
+
+files[] = art_log.profile

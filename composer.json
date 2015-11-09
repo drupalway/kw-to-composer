@@ -1,0 +1,36 @@
+{
+  "name": "dw/artlog",
+  "type": "drupal-core",
+  "profile_name": "art_log",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://drupal-packagist.webflo.io/"
+    },
+    {
+      "type": "path",
+      "url": "./profile/"
+    }
+  ],
+  "require": {
+    "davidbarratt/custom-installer": "1.0.*@alpha",
+    "drupal/drupal": "7.36",
+    "dw/artlog/profile": "@dev",
+    "drupal/addressfield": "7.1.0-rc1",
+    "drupal/ctools": "7.1.5",
+    "drupal/cinc": "7.1.0-rc1",
+    "drupal/date": "7.2.8",
+    "drupal/ds": "^7.2",
+    "drupal/bean": "^7.1"
+  },
+  "extra": {
+    "custom-installer": {
+      "drupal-module": "../build/profiles/art_log/modules/contrib/{$name}/",
+      "drupal-theme": "../build/profiles/art_log/themes/contrib/{$name}/",
+      "drupal-library": "../build/profiles/{$art_log}/libraries/{$name}/",
+      "dw-profile": "../build/profiles/art_log/",
+      "drupal-profile": "../build/profiles/art_log/",
+      "drupal-core": "../build/"
+    }
+  }
+}
